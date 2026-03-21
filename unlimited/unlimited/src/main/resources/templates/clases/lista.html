@@ -1,0 +1,24 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <h2>Clases</h2>
+
+    <a th:href="@{/}">🏠 Inicio</a>
+    <a th:href="@{/clases/nueva}">➕ Nueva Clase</a>
+
+    <table border="1">
+        <tr>
+            <th>Nombre</th>
+            <th>Maestro</th>
+            <th>Acciones</th>
+        </tr>
+
+        <tr th:each="clase : ${clases}">
+            <td th:text="${clase.nombre}"></td>
+            <td th:text="${clase.maestro}"></td>
+            <td>
+                <a th:href="@{/clases/{id}(id=${clase.id})}">Ver</a>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

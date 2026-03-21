@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Detalle Clase</title>
+
+    <style>
+        body { font-family: Arial; }
+
+        .nav { margin-bottom: 20px; }
+
+        .nav a { margin-right: 10px; }
+
+        table {
+            border-collapse: collapse;
+            margin-top: 10px;
+            width: 400px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        input {
+            padding: 6px;
+            width: 250px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="nav">
+    <a th:href="@{/}">🏠 Inicio</a>
+    <a th:href="@{/clases}">🩰 Clases</a>
+    <a th:href="@{/alumnos}">👤 Alumnos</a>
+</div>
+
+<h2 th:text="${clase.nombre}"></h2>
+<p>Maestro: <span th:text="${clase.maestro}"></span></p>
+
+<a th:href="@{/clases}">⬅ Volver</a>
+
+<h3>Alumnos inscritos</h3>
+
+<table>
+    <tr>
+        <th>Nombre</th>
+        <th>Acción</th>
+    </tr>
+
+    <tr th:each="alumno : ${alumnos}">
+        <td th:text="${alumno.nombre}"></td>
+        <td>
+            <a th:href="@{/clases/{claseId}/quitar-alumno/{alumnoId}(claseId=${clase.id}, alumnoId=${alumno.id})}">
+                ❌ Quitar
+            </a>
+        </td>
+    </tr>
+</table>
+
+<h3>Agregar alumno</h3>
+
+<input type="text" id="busqueda" placeholder="Filtrar por nombre..." />
+
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody id="tablaAlumnos"></tbody>
+</table>
+
+<script>
+    const claseId = [[${clase.id}]];
+    const input = document.getElementById("busqueda");
+    const tbody = document.getElementById("tablaAlumnos");
+
+    let alumnosGlobal = [];
+
+    // 🔥 Cargar TODOS al inicio
+    async function cargarAlumnos() {
+        const response = await fetch(`/api/clases/${claseId}/alumnos-disponibles`);
+        alumnosGlobal = await response.json();
+        renderizar(alumnosGlobal);
+    }
+
+    function renderizar(lista) {
+        tbody.innerHTML = "";
+
+        lista.forEach(a => {
+            const tr = document.createElement("tr");
+
+            const tdNombre = document.createElement("td");
+            tdNombre.textContent = a.nombre;
+
+            const tdAccion = document.createElement("td");
+            const btn = document.createElement("button");
+            btn.textContent = "Agregar";
+
+            btn.onclick = async () => {
+                await fetch(`/api/clases/${claseId}/alumnos/${a.id}`, {
+                    method: "POST"
+                });
+
+                location.reload();
+            };
+
+            tdAccion.appendChild(btn);
+
+            tr.appendChild(tdNombre);
+            tr.appendChild(tdAccion);
+
+            tbody.appendChild(tr);
+        });
+    }
+
+    // 🔍 Filtro local (SIN pegarle al backend)
+    input.addEventListener("input", () => {
+        const texto = input.value.toLowerCase();
+
+        const filtrados = alumnosGlobal.filter(a =>
+            a.nombre.toLowerCase().includes(texto)
+        );
+
+        renderizar(filtrados);
+    });
+
+    // 🚀 inicializar
+    cargarAlumnos();
+</script>
+
+</body>
+</html>

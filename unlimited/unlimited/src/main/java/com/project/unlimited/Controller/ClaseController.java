@@ -73,4 +73,12 @@ public class ClaseController {
         claseService.quitarAlumno(claseId, alumnoId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}/alumnos-disponibles")
+    public List<Alumno> buscarDisponibles(
+            @PathVariable Long id,
+            @RequestParam(required = false) String nombre) {
+
+        return claseService.buscarAlumnosDisponibles(id, nombre);
+    }
 }

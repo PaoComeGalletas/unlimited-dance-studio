@@ -4,6 +4,7 @@ import com.project.unlimited.Model.Alumno;
 import com.project.unlimited.Service.AlumnoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

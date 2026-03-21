@@ -6,9 +6,11 @@ import com.project.unlimited.Repository.AlumnoRepository;
 import com.project.unlimited.Repository.ClaseRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ClaseServiceImpl implements ClaseService {
 
     private final ClaseRepository claseRepository;
@@ -74,5 +76,23 @@ public class ClaseServiceImpl implements ClaseService {
 
         clase.getAlumnos().remove(alumno);
         alumno.getClases().remove(clase);
+    }
+
+    @Override
+    public List<Alumno> buscarAlumnosDisponibles(Long claseId, String nombre) {
+        Clase clase = claseRepository.findById(claseId)
+                .orElseThrow(() -> new EntityNotFoundException("Clase no encontrada"));
+
+        List<Alumno> alumnos;
+
+        if (nombre == null || nombre.isBlank()) {
+            alumnos = alumnoRepository.findAll();
+        } else {
+            alumnos = alumnoRepository.findByNombreContainingIgnoreCase(nombre);
+        }
+
+        return alumnos.stream()
+                .filter(a -> !clase.getAlumnos().contains(a))
+                .toList();
     }
 }

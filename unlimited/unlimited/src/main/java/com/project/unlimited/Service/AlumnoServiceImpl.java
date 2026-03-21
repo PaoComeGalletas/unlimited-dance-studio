@@ -1,13 +1,16 @@
 package com.project.unlimited.Service;
 
 import com.project.unlimited.Model.Alumno;
+import com.project.unlimited.Model.Clase;
 import com.project.unlimited.Repository.AlumnoRepository;
 import com.project.unlimited.Repository.ClaseRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class AlumnoServiceImpl implements AlumnoService{
 
     private final AlumnoRepository alumnoRepository;

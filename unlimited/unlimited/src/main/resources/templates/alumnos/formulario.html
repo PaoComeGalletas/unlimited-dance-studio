@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Alumno</title>
+</head>
+<body>
+
+<a th:href="@{/}">🏠 Inicio</a> <a th:href="@{/alumnos}">⬅ Volver</a>
+<h2 th:text="${alumno.id == null} ? 'Nuevo Alumno' : 'Editar Alumno'"></h2>
+
+<form th:action="@{/alumnos}" th:object="${alumno}" method="post">
+
+    <input type="hidden" th:field="*{id}" />
+
+    <label>Nombre:</label>
+    <input type="text" th:field="*{nombre}" /><br>
+
+    <label>Día de pago:</label>
+    <input type="number" th:field="*{diaPago}" /><br>
+
+    <label>Mensualidad:</label>
+    <input type="number" step="0.01" th:field="*{mensualidad}" /><br>
+
+    <label>Contacto emergencia:</label>
+    <input type="text" th:field="*{contactoEmergencia}" /><br>
+
+    <label>Teléfono:</label>
+    <input type="text" th:field="*{telefonoEmergencia}" /><br>
+
+    <button type="submit">Guardar</button>
+</form>
+
+</body>
+</html>

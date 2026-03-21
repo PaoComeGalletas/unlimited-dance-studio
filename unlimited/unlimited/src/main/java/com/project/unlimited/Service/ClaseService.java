@@ -22,4 +22,6 @@ public interface ClaseService {
     void agregarAlumno(Long claseId, Long alumnoId);
 
     void quitarAlumno(Long claseId, Long alumnoId);
+
+    List<Alumno> buscarAlumnosDisponibles(Long claseId, String nombre);
 }
