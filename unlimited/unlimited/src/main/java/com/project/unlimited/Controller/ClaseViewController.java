@@ -6,6 +6,7 @@ import com.project.unlimited.Service.AlumnoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/clases")
@@ -33,11 +34,32 @@ public class ClaseViewController {
         return "clases/formularioNuevaClase";
     }
 
+    // Editar unicamente los atributos de una clase
+    @GetMapping("/editar/{id}")
+    public String editar(@PathVariable Long id, Model model) {
+        Clase clase = claseService.obtenerPorId(id);
+        model.addAttribute("clase", clase);
+        return "clases/formularioNuevaClase";
+    }
+
+    // Eliminar una clase existente
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            claseService.eliminar(id);
+            redirectAttributes.addFlashAttribute("success", "Clase eliminada correctamente");
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+
+        return "redirect:/clases";
+    }
+
     // 💾 Guardar
     @PostMapping
     public String guardar(@ModelAttribute Clase clase) {
-        claseService.crear(clase);
-        return "redirect:/clases/lista";
+        claseService.guardar(clase);
+        return "redirect:/clases";
     }
 
     // 🔍 Detalle de clase 👑

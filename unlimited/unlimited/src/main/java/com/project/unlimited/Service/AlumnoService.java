@@ -1,7 +1,6 @@
 package com.project.unlimited.Service;
 
 import com.project.unlimited.Model.Alumno;
-import com.project.unlimited.Model.Clase;
 
 import java.util.List;
 

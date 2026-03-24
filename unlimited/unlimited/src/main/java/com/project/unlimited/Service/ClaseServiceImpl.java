@@ -38,6 +38,11 @@ public class ClaseServiceImpl implements ClaseService {
     }
 
     @Override
+    public Clase guardar(Clase clase) {
+        return claseRepository.save(clase);
+    }
+
+    @Override
     public Clase actualizar(Long id, Clase clase) {
         Clase updated = Clase.builder()
                 .id(id)
@@ -49,6 +54,13 @@ public class ClaseServiceImpl implements ClaseService {
 
     @Override
     public void eliminar(Long id) {
+        Clase clase = claseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Clase no encontrada"));
+
+        if (!clase.getAlumnos().isEmpty()) {
+            throw new RuntimeException("No se puede eliminar la clase porque tiene alumnos inscritos");
+        }
+
         claseRepository.deleteById(id);
     }
 

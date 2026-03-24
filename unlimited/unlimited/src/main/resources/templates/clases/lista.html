@@ -5,6 +5,14 @@
     <a th:href="@{/}">🏠 Inicio</a>
     <a th:href="@{/clases/nueva}">➕ Nueva Clase</a>
 
+    <div th:if="${success}" style="color: green;">
+        <p th:text="${success}"></p>
+    </div>
+
+    <div th:if="${error}" style="color: red;">
+        <p th:text="${error}"></p>
+    </div>
+
     <table border="1">
         <tr>
             <th>Nombre</th>
@@ -17,6 +25,13 @@
             <td th:text="${clase.maestro}"></td>
             <td>
                 <a th:href="@{/clases/{id}(id=${clase.id})}">Ver</a>
+                <a th:href="@{/clases/eliminar/{id}(id=${clase.id})}"
+                   onclick="return confirm('¿Seguro que quieres eliminar esta clase?')">
+                    Eliminar
+                </a>
+                <a th:href="@{/clases/editar/{id}(id=${clase.id})}">
+                    Editar
+                </a>
             </td>
         </tr>
     </table>

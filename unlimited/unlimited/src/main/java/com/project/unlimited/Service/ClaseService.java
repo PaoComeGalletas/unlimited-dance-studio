@@ -13,6 +13,8 @@ public interface ClaseService {
 
     Clase crear(Clase clase);
 
+    Clase guardar(Clase clase);
+
     Clase actualizar(Long id, Clase clase);
 
     void eliminar(Long id);
